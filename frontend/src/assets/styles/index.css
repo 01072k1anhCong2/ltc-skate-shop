@@ -1,0 +1,157 @@
+main {
+  min-height: 80vh;
+}
+
+.rating span {
+  margin: 0.1rem;
+}
+
+.rating svg {
+  color: #f8e825;
+}
+
+.rating-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding-left: 0.5rem;
+}
+
+.product-title {
+  height: 2.5em; /* Set a fixed height */
+  overflow: hidden; /* Hide overflow content */
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+  white-space: nowrap; /* Prevent wrapping */
+}
+
+table td,
+table th {
+  text-align: center;
+}
+
+.review {
+  margin-top: 30px;
+}
+
+.review h2 {
+  font-size: 24px;
+  background: #f4f4f4;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.review button {
+  margin-top: 10px;
+}
+
+.carousel-caption {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+.ltc-skateshop{
+  width: 70px;
+  height: auto;
+  margin-right: 20px;
+}
+
+/* Style cho chữ Logo */
+.logo-text {
+  font-family: 'Exo 2', sans-serif; 
+  font-weight: 900;             
+  font-style: italic;             
+  font-size: 1.6rem;              
+  letter-spacing: -1px;            
+  text-transform: uppercase;       
+  margin-left: 10px;
+  display: inline-block;
+  vertical-align: middle;
+  color: #fff;                     
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.2); 
+}
+
+
+.ltc-skateshop {
+  height: 45px; 
+  width: auto;
+  margin-right: 5px;
+  filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+}
+
+/* --- TỔNG THỂ CAROUSEL --- */
+.carousel {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.carousel-item {
+  height: 550px; 
+  background: #111;
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- XOAY 90 ĐỘ  VA PHÓNG TO VÁN --- */
+.carousel-item img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg) scale(2.7);
+  height: 90%;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6));
+  transition: transform 0.3s ease;
+}
+
+/* --- CHỮ  --- */
+.carousel-caption {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  padding: 30px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  text-align: right;
+}
+
+.carousel-caption h2 {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  font-size: clamp(1rem, 3vw, 2rem);
+  margin: 0;
+}
+
+/* --- NÚT MŨI TÊN ĐEN  --- */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: transparent !important; 
+  border: none !important;                  
+  filter: invert(1);                       
+  width: 45px;
+  height: 45px;
+}
+
+.carousel-control-prev, .carousel-control-next {
+  width: 10%;
+  opacity: 1 !important;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 992px) {
+  .carousel-item { height: 450px; }
+  .carousel-item img { scale: 1.7; } 
+}
+
+@media (max-width: 768px) {
+  .carousel-item { height: 320px; } 
+  .carousel-item img { scale: 0.9; } 
+  .carousel-control-prev-icon, .carousel-control-next-icon {
+    width: 30px; 
+  }
+}

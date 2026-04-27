@@ -1,0 +1,148 @@
+const products = [
+  {
+    name: 'skatedeluxe Spider Egg Twin Tail 9.25" Skateboard Deck (black)',
+    image: '/images/skatedeluxe.jpg',
+    description:
+      'Width: 9.25", Length: 32.125", Wheelbase: 14.25", Nose: 7", Tail: 7", Concave: medium, Shape: twin tail / egg shape, Construction: 7-Ply Maple (seven plies of maple wood), Detail: bottom graphic / Spider series',
+    brand: 'skatedeluxe',
+    category: 'decks',
+    price: 70.99,
+    countInStock: 15,
+    rating: 4.5,
+    numReviews: 12,
+  },
+  {
+    name: 'skatedeluxe Rose 9" Skateboard Deck (black)',
+    image: '/images/skatedeluxe-rose.jpg',
+    description:
+      'Width: 9", Length: 32.125", Wheelbase: 14.5", Nose: 6.875", Tail: 6.625", Concave: medium, Shape: standard popsicle, Construction: 7-Ply Maple (seven plies of maple wood), Detail: bottom graphic / Rose series',
+    brand: 'skatedeluxe',
+    category: 'decks',
+    price: 86.99,
+    countInStock: 9,
+    rating: 4.0,
+    numReviews: 8,
+  },
+  {
+    name: 'Anti Hero Team Classic Eagle Mini 7.3" Skateboard Deck (yellow)',
+    image: '/images/anti-hero.jpg',
+    description:
+      'Width: 7.375", Length: 28.375", Wheelbase: 11.75", Nose: 6.375", Tail: 6.125", Concave: low, Shape: standard popsicle, Construction: 7-Ply Maple (seven plies of maple wood), Detail: bottom graphic',
+    brand: 'Anti Hero',
+    category: 'decks',
+    price: 978.99,
+    countInStock: 32,
+    rating: 5,
+    numReviews: 14,
+  },
+  {
+    name: 'Powell-Peralta Anderson Hydrant Flight Shape 311 8.4" Skateboard Deck (gold foil)',
+    image: '/images/powell-peralta.jpg',
+    description:
+      'Width: 8.375", Length: 32", Wheelbase: 14.25", Nose: 6.75", Tail: 6.75", Concave: medium, Shape: shaped / twin tail, Construction: Flight (seven thin, strong plies of maple wood, one ply of glass fibre and epoxy resin, thus longer lasting and lighter than conventional 7-ply decks), Detail: foil graphic / artwork by Vernon Courtlandt Johnson / Andy Anderson pro model',
+    brand: 'Powell-Peralta',
+    category: 'decks',
+    price: 378.99,
+    countInStock: 43,
+    rating: 5,
+    numReviews: 12,
+  },
+  {
+    name: 'Powell-Peralta Guerrero BB Limited Edition S17 9.85" Skateboard Deck (white)',
+    image: '/images/powell-peralta2.jpg',
+    description:
+      'Width: 9.875", Length: 31.25", Wheelbase: 14.5" / 15", Nose: 5.375" / 5.875", Tail: 6", Concave: low, Shape: shaped, Construction: 7-Ply Hardrock (seven plies of Hardrock maple wood), Detail: foil graphic / limited and numbered / Tommy Guerrero reissue edition',
+    brand: 'Powell-Peralta',
+    category: 'decks',
+    price: 50.99,
+    countInStock: 324,
+    rating: 3.5,
+    numReviews: 10,
+  },
+  {
+    name: 'Alltimers Balloon Pup 8.5" Skateboard Deck (multi)',
+    image: '/images/alltimers.jpg',
+    description:
+      'Width: 8.5", Length: 32.3", Wheelbase: 14.5", Nose: 7.125", Tail: 6.625", Concave: medium, Shape: standard popsicle, Construction: 7-ply maple, Detail: artwork by Ian Clelland',
+    brand: 'Alltimers',
+    category: 'decks',
+    price: 56.99,
+    countInStock: 23,
+    rating: 4,
+    numReviews: 12,
+  },
+    {
+    name: 'Baker Figgy Crop Circles 8" Skateboard Deck (black white)',
+    image: '/images/baker-figgy.jpg',
+    description:
+      'Width: 8", Length: 31.5", Wheelbase: 14.25", Nose: 6.875", Tail: 6.375", Concave: low, Shape: standard popsicle, Construction: 7-ply Hardrock maple, Detail: artwork by Mike Gigliotti / Justin Figueroa pro model / Crop Circles series',
+    brand: 'Baker',
+    category: 'decks',
+    price: 56.99,
+    countInStock: 23,
+    rating: 4,
+    numReviews: 12,
+  },
+    {
+    name: 'Baker Beasley Jammy\'s 8" Skateboard Deck (multi)',
+    image: '/images/baker-beasley.jpg',
+    description:
+      'Width: 8", Length: 31.5", Wheelbase: 14.25", Nose: 6.75", Tail: 6.25", Concave: medium, Shape: standard popsicle, Construction: 7-ply hardrock maple, Detail: artwork by Mike Gigliotti / Theotis Beasley pro model',
+    brand: 'Baker',
+    category: 'decks',
+    price: 66.99,
+    countInStock: 413,
+    rating: 4,
+    numReviews: 12,
+  },
+    {
+    name: 'Baker Team Brand Logo 8" Skateboard Deck (white)',
+    image: '/images/baker-team.jpg',
+    description:
+      'Width: 8", Length: 31.5", Wheelbase: 14.25", Nose: 6.75", Tail: 6.25", Shape: standard popsicle, Construction: 7-Ply Maple (seven plies of maple wood), Detail: Team Brand Logo series',
+    brand: 'Baker',
+    category: 'decks',
+    price: 55.99,
+    countInStock: 413,
+    rating: 4,
+    numReviews: 12,
+  },
+    {
+    name: 'Alltimers Balloon Pup 8.5" Skateboard Deck (multi)',
+    image: '/images/alltimers.jpg',
+    description:
+      'Width: 8.5", Length: 32.3", Wheelbase: 14.5", Nose: 7.125", Tail: 6.625", Concave: medium, Shape: standard popsicle, Construction: 7-ply maple, Detail: artwork by Ian Clelland',
+    brand: 'Alltimers',
+    category: 'decks',
+    price: 56.99,
+    countInStock: 23,
+    rating: 4,
+    numReviews: 12,
+  },
+    {
+    name: 'skatedeluxe Spider Egg Twin Tail 9.25" Skateboard Deck (black)',
+    image: '/images/skatedeluxe.jpg',
+    description:
+      'Width: 9.25", Length: 32.125", Wheelbase: 14.25", Nose: 7", Tail: 7", Concave: medium, Shape: twin tail / egg shape, Construction: 7-Ply Maple (seven plies of maple wood), Detail: bottom graphic / Spider series',
+    brand: 'skatedeluxe',
+    category: 'decks',
+    price: 70.99,
+    countInStock: 15,
+    rating: 4.5,
+    numReviews: 12,
+  },
+    {
+    name: 'Powell-Peralta Anderson Hydrant Flight Shape 311 8.4" Skateboard Deck (gold foil)',
+    image: '/images/powell-peralta.jpg',
+    description:
+      'Width: 8.375", Length: 32", Wheelbase: 14.25", Nose: 6.75", Tail: 6.75", Concave: medium, Shape: shaped / twin tail, Construction: Flight (seven thin, strong plies of maple wood, one ply of glass fibre and epoxy resin, thus longer lasting and lighter than conventional 7-ply decks), Detail: foil graphic / artwork by Vernon Courtlandt Johnson / Andy Anderson pro model',
+    brand: 'Powell-Peralta',
+    category: 'decks',
+    price: 378.99,
+    countInStock: 43,
+    rating: 5,
+    numReviews: 12,
+  },
+];
+
+export default products;
