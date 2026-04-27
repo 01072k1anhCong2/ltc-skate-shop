@@ -10,7 +10,7 @@ import { logout } from './authSlice'; // Import the logout action
 
 // Cấu hình baseQuery để tự động đính Header
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://ltc-skate-shop.onrender.com',
+  baseUrl: BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     // Lấy userInfo từ authSlice (đã được nạp từ LocalStorage)
     const state = getState();

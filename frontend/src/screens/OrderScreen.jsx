@@ -37,7 +37,7 @@ const OrderScreen = () => {
     isLoading: loadingPayPal,
     error: errorPayPal,
   } = useGetPaypalClientIdQuery();
-
+console.log('paypal raw:', paypal);
   useEffect(() => {
     if (!errorPayPal && !loadingPayPal && paypal.clientId) {
       const loadPaypalScript = async () => {
@@ -56,6 +56,8 @@ const OrderScreen = () => {
         }
       }
     }
+    console.log('paypal clientId:', paypal?.clientId);
+console.log('window.paypal:', window.paypal);
   }, [errorPayPal, loadingPayPal, order, paypal, paypalDispatch]);
 
   function onApprove(data, actions) {
