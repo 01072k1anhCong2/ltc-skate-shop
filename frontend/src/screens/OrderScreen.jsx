@@ -37,7 +37,7 @@ const OrderScreen = () => {
     isLoading: loadingPayPal,
     error: errorPayPal,
   } = useGetPaypalClientIdQuery();
-console.log('paypal raw:', paypal);
+
   useEffect(() => {
     if (!errorPayPal && !loadingPayPal && paypal.clientId) {
       const loadPaypalScript = async () => {
@@ -56,21 +56,13 @@ console.log('paypal raw:', paypal);
         }
       }
     }
-    console.log('paypal clientId:', paypal?.clientId);
-console.log('window.paypal:', window.paypal);
   }, [errorPayPal, loadingPayPal, order, paypal, paypalDispatch]);
 
-  function onApprove(data, actions) {
-    return actions.order.capture().then(async function (details) {
-      try {
-        await payOrder({ orderId, details });
-        refetch();
-        toast.success('Order is paid');
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      }
-    });
-  }
+async function onApprove(data) {
+  await payOrder({ orderId, details: { paypalOrderId: data.orderID } });
+  refetch();
+  toast.success('Order is paid');
+}
 
   // TESTING ONLY! REMOVE BEFORE PRODUCTION
   // async function onApproveTest() {

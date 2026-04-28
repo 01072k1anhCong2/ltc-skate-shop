@@ -4,14 +4,8 @@ const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET, PAYPAL_API_URL } = process.env;
 
 /**
  * Fetches an access token from the PayPal API.
- * @see {@link https://developer.paypal.com/reference/get-an-access-token/#link-getanaccesstoken}
- *
- * @returns {Promise<string>} The access token if the request is successful.
- * @throws {Error} If the request is not successful.
- *
  */
 async function getPayPalAccessToken() {
-  // Authorization header requires base64 encoding
   const auth = Buffer.from(PAYPAL_CLIENT_ID + ':' + PAYPAL_APP_SECRET).toString(
     'base64'
   );
@@ -40,21 +34,13 @@ async function getPayPalAccessToken() {
 
 /**
  * Checks if a PayPal transaction is new by comparing the transaction ID with existing orders in the database.
- *
- * @param {Mongoose.Model} orderModel - The Mongoose model for the orders in the database.
- * @param {string} paypalTransactionId - The PayPal transaction ID to be checked.
- * @returns {Promise<boolean>} Returns true if it is a new transaction (i.e., the transaction ID does not exist in the database), false otherwise.
- * @throws {Error} If there's an error in querying the database.
- *
  */
 export async function checkIfNewTransaction(orderModel, paypalTransactionId) {
   try {
-    // Find all documents where Order.paymentResult.id is the same as the id passed paypalTransactionId
     const orders = await orderModel.find({
       'paymentResult.id': paypalTransactionId,
     });
 
-    // If there are no such orders, then it's a new transaction.
     return orders.length === 0;
   } catch (err) {
     console.error(err);
@@ -62,13 +48,8 @@ export async function checkIfNewTransaction(orderModel, paypalTransactionId) {
 }
 
 /**
- * Verifies a PayPal payment by making a request to the PayPal API.
- * @see {@link https://developer.paypal.com/docs/api/orders/v2/#orders_get}
- *
- * @param {string} paypalTransactionId - The PayPal transaction ID to be verified.
- * @returns {Promise<Object>} An object with properties 'verified' indicating if the payment is completed and 'value' indicating the payment amount.
- * @throws {Error} If the request is not successful.
- *
+ * Verifies a PayPal payment by making a GET request to the PayPal API.
+ * Dùng để kiểm tra trạng thái order (không capture).
  */
 export async function verifyPayPalPayment(paypalTransactionId) {
   const accessToken = await getPayPalAccessToken();
@@ -87,5 +68,48 @@ export async function verifyPayPalPayment(paypalTransactionId) {
   return {
     verified: paypalData.status === 'COMPLETED',
     value: paypalData.purchase_units[0].amount.value,
+  };
+}
+
+/**
+ * Captures a PayPal order server-side bằng cách gọi POST /v2/checkout/orders/:id/capture.
+ * Đây là cách an toàn, không phụ thuộc vào browser session của buyer.
+ *
+ * @param {string} paypalOrderId - PayPal order ID từ frontend (data.orderID)
+ * @returns {Promise<Object>} { captured: boolean, id: string, value: string, email_address: string, update_time: string }
+ */
+export async function capturePayPalPayment(paypalOrderId) {
+  const accessToken = await getPayPalAccessToken();
+
+  const paypalResponse = await fetch(
+    `${PAYPAL_API_URL}/v2/checkout/orders/${paypalOrderId}/capture`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  if (!paypalResponse.ok) {
+    const errData = await paypalResponse.json().catch(() => ({}));
+    throw new Error(
+      errData?.message || `Failed to capture PayPal payment: ${paypalResponse.status}`
+    );
+  }
+
+  const paypalData = await paypalResponse.json();
+
+  const capture =
+    paypalData.purchase_units?.[0]?.payments?.captures?.[0];
+
+  return {
+    captured: paypalData.status === 'COMPLETED',
+    id: capture?.id || paypalData.id,
+    value: capture?.amount?.value || paypalData.purchase_units?.[0]?.amount?.value,
+    email_address: paypalData.payer?.email_address || '',
+    update_time: capture?.update_time || paypalData.update_time || new Date().toISOString(),
+    status: paypalData.status,
   };
 }

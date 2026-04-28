@@ -2,7 +2,10 @@ import asyncHandler from '../middleware/asyncHandler.js';
 import Order from '../models/orderModel.js';
 import Product from '../models/productModel.js';
 import { calcPrices } from '../utils/calcPrices.js';
-import { verifyPayPalPayment, checkIfNewTransaction } from '../utils/paypal.js';
+import {
+  capturePayPalPayment,
+  checkIfNewTransaction,
+} from '../utils/paypal.js';
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -14,13 +17,10 @@ const addOrderItems = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('No order items');
   } else {
-
-    // get the ordered items from our database
     const itemsFromDB = await Product.find({
       _id: { $in: orderItems.map((x) => x._id) },
     });
 
-    // map over the order items and use the price from our items from database
     const dbOrderItems = orderItems.map((itemFromClient) => {
       const matchingItemFromDB = itemsFromDB.find(
         (itemFromDB) => itemFromDB._id.toString() === itemFromClient._id
@@ -33,7 +33,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
       };
     });
 
-    // calculate prices
     const { itemsPrice, taxPrice, shippingPrice, totalPrice } =
       calcPrices(dbOrderItems);
 
@@ -83,29 +82,38 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @route   PUT /api/orders/:id/pay
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
-  // NOTE: here we need to verify the payment was made to PayPal before marking
-  // the order as paid
-  const { verified, value } = await verifyPayPalPayment(req.body.id);
-  if (!verified) throw new Error('Payment not verified');
+  // Nhận paypalOrderId từ frontend (thay vì toàn bộ details)
+  const paypalOrderId = req.body.paypalOrderId;
 
-  // check if this transaction has been used before
-  const isNewTransaction = await checkIfNewTransaction(Order, req.body.id);
+  if (!paypalOrderId) {
+    res.status(400);
+    throw new Error('PayPal Order ID is required');
+  }
+
+  // Kiểm tra transaction chưa được dùng trước đó
+  const isNewTransaction = await checkIfNewTransaction(Order, paypalOrderId);
   if (!isNewTransaction) throw new Error('Transaction has been used before');
+
+  // Capture payment server-side — không cần buyer browser session
+  const { captured, id, value, email_address, update_time, status } =
+    await capturePayPalPayment(paypalOrderId);
+
+  if (!captured) throw new Error('Payment not captured');
 
   const order = await Order.findById(req.params.id);
 
   if (order) {
-    // check the correct amount was paid
+    // Kiểm tra đúng số tiền
     const paidCorrectAmount = order.totalPrice.toString() === value;
     if (!paidCorrectAmount) throw new Error('Incorrect amount paid');
 
     order.isPaid = true;
     order.paidAt = Date.now();
     order.paymentResult = {
-      id: req.body.id,
-      status: req.body.status,
-      update_time: req.body.update_time,
-      email_address: req.body.payer.email_address,
+      id,
+      status,
+      update_time,
+      email_address,
     };
 
     const updatedOrder = await order.save();
